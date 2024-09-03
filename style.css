@@ -1,0 +1,195 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+:root {
+    --clr1: #202226;
+    --clr2: #26292e;
+    --clr3: #36393f;
+    --clr4: #54575c;
+    --clr5: #686b6f;
+    --clr6: #7c7e82;
+    --clr7: #929496;
+    --clr8: #448880;
+    --clr9: #32a396;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+header {
+	position: sticky;
+	top: 0;
+	padding: 5px 20px 5px 20px;
+	border-radius: 0 0 10px 10px;
+	background: var(--clr2);
+    font-size: 28px;
+    font-weight: 600;
+	text-align: center;
+	z-index: 2;
+	box-shadow: 0 2px 0 0 var(--clr1);
+}
+
+body {
+	color: #ddd;
+	font-size: 20px;
+	font-family: "Nunito";
+	font-weight: 500;
+	background: var(--clr3);
+	margin: auto;
+    text-align: center;
+	max-width: 960px;
+	width: 100%;
+}
+
+body > div {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
+    grid-gap: 10px;
+    background: var(--clr4);
+    border-radius: 10px;
+    box-shadow: 0 2px 0 0 var(--clr1);
+    margin-top: 10px;
+    padding: 10px;
+}
+
+body > div > div {
+    background: var(--clr5);
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 0 0 var(--clr3);
+}
+
+body > div > p {
+    grid-column: 1 / -1;
+    font-size: 0.72em;
+}
+
+/*#grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}*/
+
+#topRow {
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    padding: 4px 8px;
+}
+
+#topRow > div {
+    padding: 5px;
+}
+
+#gens {
+    display: flex;
+    gap: 0.5em;
+    flex-wrap: wrap;
+}
+
+hr {
+    border-style: none;
+    border-radius: 5px;
+    height: 4px;
+    margin: 0 10px 5px;
+    background: #ddd;
+}
+
+#topRow li {
+    width: 27px;
+    border-radius: 50%;
+}
+
+#topRow li, #version > div, #method > div, #option > div {
+    list-style: none;
+    padding: 2px;
+    background: var(--clr6);
+    cursor: pointer;
+    box-shadow: 0 2px 0 0 var(--clr4);
+    transition: background-color 0.3s, width 0.3s, opacity 0.3s, box-shadow 0.3s;
+}
+
+#topRow li:hover, #botRow > div > div:hover {
+    background: var(--clr7);
+    box-shadow: 0 2px 0 0 var(--clr4);
+}
+
+#topRow li.active, #botRow > div  div.active {
+    background: var(--clr8);
+    box-shadow: 0 2px 0 0 var(--clr4), inset 0 0 0 2px var(--clr9);
+}
+
+#botRow > div  div.disable {
+    background: var(--clr7);
+    opacity: 0.5;
+    box-shadow: 0 2px 0 0 var(--clr4);
+}
+
+#botRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: 10px;
+    padding: 0 10px 5px;
+    justify-items: center;
+    /*display: none;*/
+}
+
+#botRow > div {
+    width: 100%;
+}
+
+#version > div, #method > div, #option > div {
+    background: var(--clr6);
+    font-size: 80%;
+    cursor: pointer;
+    border-radius: 10px;
+    padding: 5px;
+    margin-top: 5px;
+}
+
+input[type=number] {
+    background: var(--clr6);
+    box-sizing: content-box;
+    width: 72px;
+    text-align: center;
+    font-size: inherit;
+    font-weight: 600;
+    color: #ddd;
+    padding: 4px;
+    border-radius: 8px;
+    box-shadow: 0 2px 0 0 var(--clr4);
+    border: 0;
+    outline: 0;
+}
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+/*input[type="number"] {
+    -moz-appearance: textfield !important;
+}*/
+
+input[type=range] {
+    width: 100%;
+}
+
+@media(max-width: 575px) {
+    header {
+        font-size: 20px;
+    }
+    body {
+        font-size: 16px;
+    }
+    body > div {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto;
+    }
+    #topRow li {
+        width: 22px;
+    }
+    input[type=number] {
+        width: 52px;
+    }
+}
