@@ -161,7 +161,8 @@ const data = {
 };
 
 
-document.getElementById("percent").oninput = findAttempts;
+document.getElementById("percent").oninput = updateFromSlider;
+document.getElementById("percentLabel").onkeyup = updateFromNumber;
 genTable();
 findAttempts();
 
@@ -327,9 +328,24 @@ function updateOdds() {
 function findAttempts() {
     let odds = document.getElementById("odds").value;
     let percent = document.getElementById("percent");
-    document.getElementById("percentLabel").innerText = parseFloat(percent.value).toFixed(1)+"%";
     let n = Math.ceil(Math.log(1 - percent.value/100) / Math.log(1 - 1 / odds));
     document.getElementById("attempt").value = n;
+};
+
+function updateFromSlider() {
+    let percent = document.getElementById("percent");
+    let percentLabel = document.getElementById("percentLabel");
+    percentLabel.value = parseFloat(percent.value).toFixed(1);
+    findAttempts();
+};
+
+function updateFromNumber() {
+    let percentLabel = document.getElementById("percentLabel");
+    let percent = document.getElementById("percent");
+    if (percentLabel.value >= 0 && percentLabel.value < 100) {
+        percent.value = parseFloat(percentLabel.value).toFixed(1);
+        findAttempts();
+    };
 };
 
 function findChance() {
@@ -340,6 +356,6 @@ function findChance() {
     if(chance*100 < 1){round=3};
     if(chance*100 > 99){round=2};
     let percent = (chance*100).toFixed(round);
-    document.getElementById("percentLabel").innerText = percent+"%";
+    document.getElementById("percentLabel").value = percent;
     document.getElementById("percent").value = percent;
 };
