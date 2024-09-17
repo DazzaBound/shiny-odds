@@ -116,7 +116,8 @@ const data = {
                 {name: "Encounters", rolls: 1},
                 {name: "Brilliant Aura", rolls: 1},
                 {name: "Masuda", rolls: 6},
-                {name: "DA's", base: 300}
+                {name: "DA's (specific)", base: 300},
+                {name: "DA's (any)", base: 75}
             ],
             options: [
                 {name: "Shiny Charm", rolls: 2}
@@ -292,8 +293,6 @@ function selOption(o) {
             });
         }
     }
-
-
 
     updateOdds();
 };
