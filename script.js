@@ -117,7 +117,7 @@ const data = {
                 {name: "Brilliant Aura", rolls: 1},
                 {name: "Masuda", rolls: 6, disable: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled","500+ Battled"]},
                 {name: "DA's (specific)", base: 300, disable: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled","500+ Battled"]},
-                {name: "DA's (any)", base: 75, disable: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled","500+ Battled"]}
+                {name: "DA's (any)", base: 300, rollMult: 4, disable: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled","500+ Battled"]}
             ],
             options: [
                 {name: "Shiny Charm", rolls: 2},
@@ -126,7 +126,7 @@ const data = {
                 {name: "100-199 Battled", rolls: 3, exclude: ["1-49 Battled","50-99 Battled","200-299 Battled","300-499 Battled","500+ Battled"]},
                 {name: "200-299 Battled", rolls: 4, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","300-499 Battled","500+ Battled"]},
                 {name: "300-499 Battled", rolls: 5, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","500+ Battled"]},
-                {name: "500+ Battled", rolls: 6, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled"]},
+                {name: "500+ Battled", roll: 6, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled"]},
             ]
         },
         "BD / SP": {
@@ -317,6 +317,10 @@ function findRolls() {
                 rolls += parseInt(o.getAttribute("data-roll"));
             }
         }
+    }
+
+    if (methodDiv && methodDiv.querySelector(".active") && methodDiv.querySelector(".active").innerText === "DA's (any)") {
+        rolls *= 4;
     }
 };
 
