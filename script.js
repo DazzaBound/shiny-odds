@@ -384,7 +384,7 @@ function updateOdds() {
         break;
     };
     let oddsVal = (1 / (1-((base-1)/base)**shinyRolls));
-    odds.value = Math.floor(oddsVal);
+    odds.value = oddsVal.toFixed(0);
 }
 
 function findRolls(attempts) {
