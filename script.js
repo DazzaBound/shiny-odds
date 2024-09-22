@@ -1,6 +1,3 @@
-let base = 4096;
-let rolls = 1;
-
 const data = {
     "2" : {
         "G / S / C": {
@@ -126,7 +123,7 @@ const data = {
                 {name: "100-199 Battled", rolls: 3, exclude: ["1-49 Battled","50-99 Battled","200-299 Battled","300-499 Battled","500+ Battled"]},
                 {name: "200-299 Battled", rolls: 4, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","300-499 Battled","500+ Battled"]},
                 {name: "300-499 Battled", rolls: 5, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","500+ Battled"]},
-                {name: "500+ Battled", roll: 6, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled"]},
+                {name: "500+ Battled", rolls: 6, exclude: ["1-49 Battled","50-99 Battled","100-199 Battled","200-299 Battled","300-499 Battled"]},
             ]
         },
         "BD / SP": {
@@ -167,10 +164,44 @@ const data = {
     }
 };
 
-document.getElementById("percent").oninput = updateFromSlider;
-document.getElementById("percentLabel").onkeyup = updateFromNumber;
+let base = 4096;
+let rolls = 1;
+const percentInput = document.getElementById("percentLabel");
+const rangeInput = document.getElementById("percent");
+const attemptInput = document.getElementById("attempt");
+
+percentInput.addEventListener("focus", function(){
+    percentInput.select();
+});
+
+percentInput.addEventListener("blur", function(){
+    percentInput.value = parseFloat(percentInput.value).toFixed(1);
+});
+
+percentInput.addEventListener("input", function() {
+    let value = percentInput.value;
+
+    if(value < 0.1) {
+        value = 0.1;
+    } else if (value > 99.9) {
+        value = 99.9;
+    }
+
+    rangeInput.value = value;
+    getAttempts(value);
+});
+
+rangeInput.addEventListener("input", function(){
+    percentInput.value = parseFloat(rangeInput.value).toFixed(1);
+    getAttempts(percentInput.value);
+});
+
+attemptInput.addEventListener("input", function(){
+    getChance(attemptInput.value);
+});
+
 genTable();
-findAttempts();
+getAttempts(percentInput.value);
 
 function genTable() {
     document.getElementById("gens").innerHTML = "";
@@ -202,7 +233,8 @@ function genBot(btn, g) {
         div.setAttribute("onclick", "genOpt(this, '"+g+"', '"+v+"')")
         document.getElementById("version").appendChild(div);
     }
-    updateOdds();
+    document.getElementById("odds").value = base;
+    getAttempts(percentInput.value);
 };
 
 function genOpt(btn, g, v) {
@@ -267,7 +299,8 @@ function selMethod(g, v, m) {
         });
     }
     base = m.getAttribute("data-base") ? m.getAttribute("data-base") : (g < 6 ? 8192 : 4096);
-    updateOdds();
+    document.getElementById("odds").value = base;
+    getAttempts(percentInput.value);
 }
 
 function selOption(o) {
@@ -298,70 +331,139 @@ function selOption(o) {
             });
         }
     }
-
-    updateOdds();
-};
-
-function findRolls() {
-    const methodDiv = document.querySelector("#method");
-    const optionDiv = document.querySelector("#option");
-
-    if (methodDiv && methodDiv.querySelector(".active")) {
-        rolls = parseInt(methodDiv.querySelector(".active").getAttribute("data-roll") || 1);
-    };
-
-    if (optionDiv) {
-        const activeOptions = optionDiv.querySelectorAll(".active");
-        if (activeOptions.length > 0) {
-            for(let o of activeOptions) {
-                rolls += parseInt(o.getAttribute("data-roll"));
-            }
-        }
-    }
-
-    if (methodDiv && methodDiv.querySelector(".active") && methodDiv.querySelector(".active").innerText === "DA's (any)") {
-        rolls *= 4;
-    }
+    getAttempts(percentInput.value);
 };
 
 function updateOdds() {
-    findRolls();
-    let odds = (1 / (1-((base-1)/base)**rolls)).toFixed(0);
-    document.getElementById("odds").value = odds;
-    findAttempts();
-};
+    const odds = document.getElementById("odds");
+    const methodDiv = document.querySelector("#method");
+    const methodActive = methodDiv.querySelector(".active")
+    const methodName = methodActive ? methodActive.innerText : "default";
+    const optionDiv = document.querySelector("#option");
+    const optionActive = optionDiv.querySelectorAll(".active");
+    let i = attemptInput.value;
+    let shinyRolls = 1;
 
-function findAttempts() {
-    let odds = document.getElementById("odds").value;
-    let percent = document.getElementById("percent");
-    let n = Math.ceil(Math.log(1 - percent.value/100) / Math.log(1 - 1 / odds));
-    document.getElementById("attempt").value = n;
-};
-
-function updateFromSlider() {
-    let percent = document.getElementById("percent");
-    let percentLabel = document.getElementById("percentLabel");
-    percentLabel.value = parseFloat(percent.value).toFixed(1);
-    findAttempts();
-};
-
-function updateFromNumber() {
-    let percentLabel = document.getElementById("percentLabel");
-    let percent = document.getElementById("percent");
-    if (percentLabel.value >= 0 && percentLabel.value < 100) {
-        percent.value = parseFloat(percentLabel.value).toFixed(1);
-        findAttempts();
+    switch(methodName) {
+        default:
+            if (methodDiv && methodActive) {
+                shinyRolls = parseInt(methodActive.getAttribute("data-roll") || 1);
+            };
+            if (optionDiv && optionActive.length > 0) {
+                for(let o of optionActive) {
+                    shinyRolls += parseInt(o.getAttribute("data-roll"));
+                }
+            };
+            if (methodDiv && methodActive && methodActive.innerText === "DA's (any)") {
+                shinyRolls *= 4;
+            };
+            break;
+        case "Chain Fishing" :
+            shinyRolls = (i <= 20) ? (2*i) : 41;
+            if (optionDiv && optionActive.length > 0) {
+                for(let o of optionActive) {
+                    shinyRolls += parseInt(o.getAttribute("data-roll"));
+                }
+            };
+        break;
+        case "Catch Combo" :
+            shinyRolls = (i <= 10) ? 1 : (i <= 20) ? 4 : (i <= 30) ? 8 : 12;
+            if (optionDiv && optionActive.length > 0) {
+                for(let o of optionActive) {
+                    shinyRolls += parseInt(o.getAttribute("data-roll"));
+                }
+            };
+        break;
+        case "S.O.S." :
+            shinyRolls = (i <= 10) ? 1 : (i <= 20) ? 5 : (i <= 30) ? 9 : 13;
+            if (optionDiv && optionActive.length > 0) {
+                for(let o of optionActive) {
+                    shinyRolls += parseInt(o.getAttribute("data-roll"));
+                }
+            };
+        break;
     };
-};
+    let oddsVal = (1 / (1-((base-1)/base)**shinyRolls));
+    odds.value = Math.floor(oddsVal);
+}
 
-function findChance() {
-    let odds = document.getElementById("odds").value;
-    let attempt = document.getElementById("attempt").value;
-    let round =1;
-    let chance = 1-(1-(1/odds))**attempt;
+function findRolls(attempts) {
+    const methodDiv = document.querySelector("#method");
+    const methodActive = methodDiv.querySelector(".active")
+    const methodName = methodActive ? methodActive.innerText : "default";
+    const optionDiv = document.querySelector("#option");
+    const optionActive = optionDiv.querySelectorAll(".active");
+    let shinyRolls = 1;
+
+    switch(methodName) {
+        default:
+            if (methodDiv && methodActive) {
+                shinyRolls = parseInt(methodActive.getAttribute("data-roll") || 1);
+            };
+            if (optionDiv && optionActive.length > 0) {
+                for(let o of optionActive) {
+                    shinyRolls += parseInt(o.getAttribute("data-roll"));
+                }
+            };
+            if (methodDiv && methodActive && methodActive.innerText === "DA's (any)") {
+                shinyRolls *= 4;
+            };
+            shinyRolls *= attempts;
+            break;
+        case "Chain Fishing" :
+            shinyRolls = 0;
+            for(let i = 1; i <= attempts; i++) {
+              shinyRolls += (i <= 20) ? (2*i) : 41;
+              if (optionDiv && optionActive.length > 0) {
+                for(let o of optionActive) {
+                    shinyRolls += 1+ parseInt(o.getAttribute("data-roll"));
+                };
+            };
+        };
+        break;
+        case "Catch Combo" :
+            shinyRolls = 0;
+            for (let i = 1; i <= attempts; i++) {
+                let increment = (i <= 10) ? 1 : (i <= 20) ? 4 : (i <= 30) ? 8 : 12;
+                for(let o of optionActive) {
+                    shinyRolls += parseInt(o.getAttribute("data-roll"));
+                };
+                shinyRolls += increment;
+            };
+        break;
+        case "S.O.S." :
+            shinyRolls = 0;
+            for (let i = 1; i <= attempts; i++) {
+                let increment = (i <= 10) ? 1 : (i <= 20) ? 5 : (i <= 30) ? 9 : 13;
+                for(let o of optionActive) {
+                    shinyRolls += parseInt(o.getAttribute("data-roll"));
+                };
+                shinyRolls += increment;
+            }
+        break;
+    };
+    return shinyRolls;
+}
+
+function getChance(attempts) {
+    const shinyRolls = findRolls(attempts);
+    let chance = 1 - ((base-1)/base)**shinyRolls;
+    let round = 1;
     if(chance*100 < 1){round=3};
     if(chance*100 > 99){round=2};
     let percent = (chance*100).toFixed(round);
-    document.getElementById("percentLabel").value = percent;
-    document.getElementById("percent").value = percent;
-};
+    rangeInput.value = percent;
+    percentInput.value = percent;
+    updateOdds();
+}
+
+function getAttempts(targetChance) {
+    let targetProbability = targetChance / 100;
+    let requiredRolls = Math.log(1 - targetProbability) / Math.log((base-1) / base);
+    let attempts = 1;
+    while (findRolls(attempts) < requiredRolls) {
+        attempts++;
+    }
+    attemptInput.value = attempts;
+    updateOdds();
+}
