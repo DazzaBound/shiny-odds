@@ -14,7 +14,7 @@
         <div id="calc">
             Your odds are 1 in <input type="number" id="odds" value="4096" onkeyup="findAttempts()" onfocus="genTable()"> .<br>
             Roughly <span><input type="number" id="percentLabel" min="0.1" max="99.999" value="10.0">%</span> of players will find<br>
-            a shiny within <input type="number" id="attempt" onkeyup="findChance()"> encounters.<br>
+            a shiny within <input type="number" id="attempt"> encounters.<br>
             <input type="range" id="percent" min="0.1" max="99.9" step="0.1" value="10.0">
         </div>
         <div id="grid">
@@ -29,13 +29,7 @@
                 <div id="option">Options</div>
             </div>
         </div>
-        <p>Input odds manually, or use the generation selectors to find your odds. Click into the odds input field to reset the generation table.
-            <br><br>
-            <p style="text-align: left">TO DO 
-            <br>• Gen 6: Chain Fishing Calcs 
-            <br>• Gen 7: SOS calcs, LGPE catch combo calcs
-            </p>
-        </p>
+        <p>Input odds manually, or use the generation selectors to find your odds. Click into the odds input field to reset the generation table.</p>
     </div>
 
     <script src="script.js"></script>
