@@ -171,7 +171,15 @@ const rangeInput = document.getElementById("percent");
 const attemptInput = document.getElementById("attempt");
 
 percentInput.addEventListener("focus", function(){
-    percentInput.select();
+    this.select();
+});
+
+attemptInput.addEventListener("focus", function(){
+    this.select();
+});
+
+document.getElementById("odds").addEventListener("focus", function(){
+    this.select();
 });
 
 percentInput.addEventListener("blur", function(){
