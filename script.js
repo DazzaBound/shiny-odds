@@ -208,6 +208,12 @@ attemptInput.addEventListener("input", function(){
     getChance(attemptInput.value);
 });
 
+document.getElementById("incAttempt").addEventListener("click", function(){
+    let value = parseInt(attemptInput.value) +1;
+    attemptInput.value = value;
+    getChance(value);
+});
+
 genTable();
 getAttempts(percentInput.value);
 
@@ -367,7 +373,7 @@ function updateOdds() {
             };
             break;
         case "Chain Fishing" :
-            shinyRolls = (i <= 20) ? (2*i) : 41;
+            shinyRolls = (i < 20) ? (2*i) : 41;
             if (optionDiv && optionActive.length > 0) {
                 for(let o of optionActive) {
                     shinyRolls += parseInt(o.getAttribute("data-roll"));
