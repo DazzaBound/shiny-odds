@@ -16,6 +16,14 @@
             Roughly <span><input type="number" id="percentLabel" min="0.1" max="99.999" value="10.0">%</span> of players will find<br>
             a shiny within <input type="number" id="attempt" min="1"><button id="incAttempt">+</button> encounters.<br>
             <input type="range" id="percent" min="0.1" max="99.9" step="0.1" value="10.0">
+            <div id="quickSel">Presets:
+                <button onclick="percentInput.value = parseFloat(10).toFixed(1); rangeInput.value = 10; getAttempts(10);">10%</button>
+                <button onclick="percentInput.value = parseFloat(25).toFixed(1); rangeInput.value = 25; getAttempts(25);">25%</button>
+                <button onclick="percentInput.value = parseFloat(50).toFixed(1); rangeInput.value = 50; getAttempts(50);">50%</button>
+                <button onclick="percentInput.value = parseFloat(75).toFixed(1); rangeInput.value = 75; getAttempts(75);">75%</button>
+                <button onclick="percentInput.value = parseFloat(90).toFixed(1); rangeInput.value = 90; getAttempts(90);">90%</button>
+                <button onclick="percentInput.value = parseFloat(95).toFixed(1); rangeInput.value = 95; getAttempts(95);">95%</button>
+            </div>
         </div>
         <div id="grid">
             <div id="topRow">

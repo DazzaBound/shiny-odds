@@ -169,6 +169,7 @@ let rolls = 1;
 const percentInput = document.getElementById("percentLabel");
 const rangeInput = document.getElementById("percent");
 const attemptInput = document.getElementById("attempt");
+const oddsInput = document.getElementById("odds");
 
 percentInput.addEventListener("focus", function(){
     this.select();
@@ -178,8 +179,13 @@ attemptInput.addEventListener("focus", function(){
     this.select();
 });
 
-document.getElementById("odds").addEventListener("focus", function(){
+oddsInput.addEventListener("focus", function(){
     this.select();
+});
+
+oddsInput.addEventListener("input", function(){
+    base = oddsInput.value;
+    getAttempts(percentInput.value);
 });
 
 percentInput.addEventListener("blur", function(){
