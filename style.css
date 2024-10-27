@@ -69,6 +69,7 @@ body > div > p {
 #quickSel {
     display: flex;
     justify-content: space-between;
+    font-size: 0.9em;
 }
 
 #topRow {
