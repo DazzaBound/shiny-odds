@@ -66,10 +66,17 @@ body > div > p {
     font-size: 0.72em;
 }
 
-#quickSel {
-    display: flex;
-    justify-content: space-between;
+#quickSelOdds, #quickSelEnc {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(6, 1fr);
+    align-items: center;
     font-size: 0.9em;
+    margin: 5px 0;
+}
+
+#quickSelOdds > span, #quickSelEnc > span {
+    text-align: right;
+    padding-right: 5px;
 }
 
 #topRow {
