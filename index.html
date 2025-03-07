@@ -26,12 +26,12 @@
                 <button onclick="percentInput.value = parseFloat(95).toFixed(1); rangeInput.value = 95; getAttempts(95);">95%</button>
             </div>
             <div id="quickSelEnc"><span>Odds:</span>
+                <button onclick="let attempts = Math.ceil(0.25*oddsInput.value); attemptInput.value = attempts; getChance(attempts);">0.25x</button>
                 <button onclick="let attempts = Math.ceil(0.5*oddsInput.value); attemptInput.value = attempts; getChance(attempts);">0.5x</button>
                 <button onclick="let attempts = Math.ceil(oddsInput.value); attemptInput.value = attempts; getChance(attempts);">1x</button>
                 <button onclick="let attempts = Math.ceil(2*oddsInput.value); attemptInput.value = attempts; getChance(attempts);">2x</button>
                 <button onclick="let attempts = Math.ceil(3*oddsInput.value); attemptInput.value = attempts; getChance(attempts);">3x</button>
                 <button onclick="let attempts = Math.ceil(4*oddsInput.value); attemptInput.value = attempts; getChance(attempts);">4x</button>
-                <button onclick="let attempts = Math.ceil(5*oddsInput.value); attemptInput.value = attempts; getChance(attempts);">5x</button>
             </div>
         </div>
         <div id="grid">
