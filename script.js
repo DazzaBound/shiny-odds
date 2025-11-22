@@ -509,9 +509,10 @@ function getTime() {
         let encounters = parseInt(attemptInput.value);
         console.log("Rate: "+rate+" s/encounter")
         console.log(encounters*rate+" seconds to reach "+encounters+" encounters")
-        dayInput.value = Math.floor(encounters*rate/86400)
-        dayInput.value = Math.floor(encounters*rate % 86400 / 3600)
-        minuteInput.value = Math.floor(encounters*rate % 3600 / 60)
-        secondInput.value = encounters*rate % 60
+        sPerEnc = encounters*rate;
+        dayInput.value = Math.floor(sPerEnc/86400)
+        hourInput.value = Math.floor(sPerEnc % 86400 / 3600)
+        minuteInput.value = Math.floor(sPerEnc % 3600 / 60)
+        secondInput.value = sPerEnc % 60
     }
 } 
