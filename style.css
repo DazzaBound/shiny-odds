@@ -186,9 +186,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
     -webkit-appearance: none !important;
     margin: 0 !important;
 }
-/*input[type="number"] {
-    -moz-appearance: textfield !important;
-}*/
 
 input[type=range] {
     width: 100%;

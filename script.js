@@ -178,18 +178,17 @@ const percentInput = document.getElementById("percentLabel");
 const rangeInput = document.getElementById("percent");
 const attemptInput = document.getElementById("attempt");
 const oddsInput = document.getElementById("odds");
+const rateInput = document.getElementById("rate");
+const rateMinuteInput = document.getElementById("rateM");
+const rateSecondInput = document.getElementById("rateS");
+const dayInput = document.getElementById("timeD");
+const hourInput = document.getElementById("timeH");
+const minuteInput = document.getElementById("timeM");
+const secondInput = document.getElementById("timeS");
 
-percentInput.addEventListener("focus", function(){
-    this.select();
-});
-
-attemptInput.addEventListener("focus", function(){
-    this.select();
-});
-
-oddsInput.addEventListener("focus", function(){
-    this.select();
-});
+[percentInput, attemptInput, oddsInput, rateInput, rateMinuteInput, rateSecondInput, dayInput, hourInput, minuteInput, secondInput].forEach(el =>
+    el.addEventListener("focus", function() {this.select(); })
+);
 
 oddsInput.addEventListener("input", function(){
     base = oddsInput.value;
@@ -227,6 +226,12 @@ document.getElementById("incAttempt").addEventListener("click", function(){
     attemptInput.value = value;
     getChance(value);
 });
+
+[rateInput, rateMinuteInput, rateSecondInput].forEach(el =>
+    el.addEventListener("input", function(){
+        getTime();
+    })
+);
 
 genTable();
 getAttempts(percentInput.value);
@@ -495,3 +500,18 @@ function getAttempts(targetChance) {
     attemptInput.value = attempts;
     updateOdds();
 }
+
+function getTime() {
+    if(rateInput.value > 0 && (rateMinuteInput.value > 0 || rateSecondInput.value > 0)
+    ) {
+        let seconds = parseInt(rateMinuteInput.value)*60 + parseInt(rateSecondInput.value);
+        let rate = seconds/rateInput.value;
+        let encounters = parseInt(attemptInput.value);
+        console.log("Rate: "+rate+" s/encounter")
+        console.log(encounters*rate+" seconds to reach "+encounters+" encounters")
+        dayInput.value = Math.floor(encounters*rate/86400)
+        dayInput.value = Math.floor(encounters*rate % 86400 / 3600)
+        minuteInput.value = Math.floor(encounters*rate % 3600 / 60)
+        secondInput.value = encounters*rate % 60
+    }
+} 
