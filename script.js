@@ -166,7 +166,10 @@ const data = {
                 {name: "Encounters", rolls: 1}
             ],
             options: [
-                {name: "Shiny Charm", rolls: 3}
+                {name: "Shiny Charm", rolls: 3},
+                {name: "Sparkle Power Lvl 1", rolls: 1, exclude: ["Sparkle Power Lvl 2", "Sparkle Power Lvl 3"]},
+                {name: "Sparkle Power Lvl 2", rolls: 2, exclude: ["Sparkle Power Lvl 1", "Sparkle Power Lvl 3"]},
+                {name: "Sparkle Power Lvl 3", rolls: 3, exclude: ["Sparkle Power Lvl 1", "Sparkle Power Lvl 2"]},
             ]
         }
     }
